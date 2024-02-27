@@ -1,0 +1,124 @@
+npm install vue@next
+
+<template>
+  <div>
+    <h2>Calculator</h2>
+    <form @submit.prevent="calculateResult">
+      <label for="num1">Number 1:</label>
+      <input v-model="num1" type="number" required />
+
+      <label for="operator">Operation:</label>
+      <select v-model="operator" required>
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+      </select>
+
+      <label for="num2">Number 2:</label>
+      <input v-model="num2" type="number" required />
+
+      <button type="submit">Calculate</button>
+    </form>
+
+    <div v-if="result !== null">
+      <p>Result: {{ result }}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      num1: 0,
+      num2: 0,
+      operator: '+',
+      result: null,
+    };
+  },
+  methods: {
+    calculateResult() {
+      switch (this.operator) {
+        case '+':
+          this.result = this.num1 + this.num2;
+          break;
+        case '-':
+          this.result = this.num1 - this.num2;
+          break;
+        case '*':
+          this.result = this.num1 * this.num2;
+          break;
+        case '/':
+          this.result = this.num1 / this.num2;
+          break;
+        default:
+          this.result = null;
+      }
+    },
+  },
+};
+</script>
+
+    Create the API Component (ApiData.vue):
+
+html
+<template>
+  <div>
+    <h2>API Data</h2>
+    <button @click="fetchData">Fetch Data</button>
+
+    <div v-if="apiData">
+      <p>ID: {{ apiData.id }}</p>
+      <p>Quote: {{ apiData.quote }}</p>
+      <p>Anime: {{ apiData.anime }}</p>
+      <p>Character: {{ apiData.character }}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+ {
+  data() {
+    return {
+      apiData: null,
+    };
+  },
+  methods: {
+    async fetchData() {
+      try {
+        const response = await fetch('https://animechan.xyz/api/random');
+        const data = await response.json();
+        this.apiData = data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+  },
+};
+</script>
+
+    App Component (App.vue):
+
+html
+<template>
+  <div id="app">
+    <Calculator />
+    <ApiData />
+  </div>
+</template>
+
+<script>
+import Calculator from './components/Calculator.vue';
+import ApiData from './components/ApiData.vue';
+
+ {
+  components: {
+    Calculator,
+    ApiData,
+  },
+};
+</script>
+
+    
+Run your application:
